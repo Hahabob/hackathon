@@ -1,6 +1,8 @@
 // src/App.tsx
-// import { Routes, Route } from "react-router-dom";
-// import ProductCatalogPage from "./pages/ProductCatalogPage";
+import { Routes, Route } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
+
+import ProductCatalogPage from "./pages/ProductCatalogPage";
 // import ShoppingCartPage from "./pages/ShoppingCartPage";
 // import MapPage from "./pages/MapPage";
 
@@ -8,10 +10,9 @@ import Sidebar from "./components/SideBar";
 import { useAuth } from "./contexts/AuthContext";
 import { useSidebar } from "./contexts/SideBarContext";
 import { useSearch } from "./contexts/SearchContext";
-import ProductList from "./components/ProductList";
 import GlobalSearchBar from "./components/GlobalSearchBar";
 import ProductCard from "./components/ProductCard";
-import CartSummary from "./components/CartSummary";
+import StartPage from "./pages/StartPage";
 
 // import Header from "./components/Header";
 // import Navigation from "./components/Navigation";
@@ -34,9 +35,13 @@ const App = () => {
       </div>
 
       <Sidebar />
-      <ProductList />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<StartPage />} />
+          <Route path="products" element={<ProductCatalogPage />} />
+        </Routes>
+      </BrowserRouter>
 
-      <CartSummary />
       {selectedProduct && (
         <>
           <div
