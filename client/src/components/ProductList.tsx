@@ -7,12 +7,10 @@ import { useFetchProducts } from "../hooks/useFetch";
 import ProductItem from "./ProductItem";
 import type { Product } from "@/types/Product";
 import ProductCard from "./ProductCard";
-
 const ProductList = () => {
   const { data: products = [], isLoading, error } = useFetchProducts();
   const [openCategory, setOpenCategory] = useState<string | null>(null);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-
   if (isLoading) return <p>loading your products...</p>;
   if (error) return <p>error fetching products</p>;
   if (products.length === 0) return <p>no products to display</p>;
