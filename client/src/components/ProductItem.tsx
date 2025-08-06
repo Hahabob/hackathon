@@ -19,6 +19,9 @@ const ProductItem = ({ product, onClick }: Props) => {
         <div>
           <p className="font-semibold ">{product.name}</p>
           <p className="text-sm text-gray-500">{product.producer}</p>
+          <p className="text-sm text-blue-600">
+            ₪{quantity ? product.price * quantity : product.price}
+          </p>
         </div>
       </div>
 

@@ -29,7 +29,7 @@ const ProductCard = ({ product, onClose }: Props) => {
 
       <p className="text-gray-600 mb-2">Category: {product.category}</p>
       <p className="text-lg font-bold text-blue-600 mb-4">
-        ${product.price.toFixed(2)}
+        ₪{quantity ? product.price * quantity : product.price}
       </p>
 
       <div className="flex items-center space-x-4 mb-4">
