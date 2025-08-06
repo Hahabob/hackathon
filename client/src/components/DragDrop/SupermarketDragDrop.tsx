@@ -34,18 +34,38 @@ import type {
 } from "./types";
 
 import DraggableProduct from "./DraggableProduct";
-import DraggableAisle from "./DraggableAisle";
+import DraggableAisle from "./Aisle";
 import DraggableStoreFeature from "./DraggableStoreFeature";
 
 import BorderSpotComponent from "./BorderSpotComponent";
 import GridSpotComponent from "./GridSpotComponent";
 
+// Replace Tailwind classes with actual color identifiers that map to real colors
 const aisleColors = [
-  "bg-blue-100 border-blue-500",
-  "bg-green-100 border-green-500",
-  "bg-yellow-100 border-yellow-500",
-  "bg-purple-100 border-purple-500",
+  "blue", // Will map to blue colors in components
+  "green", // Will map to green colors in components
+  "yellow", // Will map to yellow colors in components
+  "purple", // Will map to purple colors in components
+  "orange", // Will map to orange colors in components
+  "pink", // Will map to pink colors in components
+  "indigo", // Will map to indigo colors in components
+  "red", // Will map to red colors in components
 ];
+
+// Helper function to convert color names to the old Tailwind format for backward compatibility
+const getColorString = (colorName: string): string => {
+  const colorMap: Record<string, string> = {
+    blue: "bg-blue-100 border-blue-500",
+    green: "bg-green-100 border-green-500",
+    yellow: "bg-yellow-100 border-yellow-500",
+    purple: "bg-purple-100 border-purple-500",
+    orange: "bg-orange-100 border-orange-500",
+    pink: "bg-pink-100 border-pink-500",
+    indigo: "bg-indigo-100 border-indigo-500",
+    red: "bg-red-100 border-red-500",
+  };
+  return colorMap[colorName] || "bg-gray-100 border-gray-500";
+};
 
 const initialProducts: Product[] = [
   { id: "p1", name: "Milk", price: 1.5 },
@@ -58,14 +78,14 @@ const initialAisles: Aisle[] = [
     id: "a1",
     name: "Aisle 1",
     products: [],
-    color: aisleColors[0],
+    color: getColorString(aisleColors[0]),
     position: null,
   },
   {
     id: "a2",
     name: "Aisle 2",
     products: [],
-    color: aisleColors[1],
+    color: getColorString(aisleColors[1]),
     position: null,
   },
 ];
@@ -76,7 +96,7 @@ const initialStoreFeatures: StoreFeature[] = [
     name: "Entrance 1",
     type: "entrance",
     emoji: "🚪",
-    color: "bg-green-100 border-green-500",
+    color: getColorString("green"),
     position: null,
   },
   {
@@ -84,7 +104,7 @@ const initialStoreFeatures: StoreFeature[] = [
     name: "Checkout 1",
     type: "checkout",
     emoji: "🛒",
-    color: "bg-orange-100 border-orange-500",
+    color: getColorString("orange"),
     position: null,
   },
   {
@@ -92,7 +112,7 @@ const initialStoreFeatures: StoreFeature[] = [
     name: "Exit 1",
     type: "exit",
     emoji: "🚶",
-    color: "bg-red-100 border-red-500",
+    color: getColorString("red"),
     position: null,
   },
 ];
@@ -203,6 +223,8 @@ export default function SupermarketDragDrop() {
 
     const activeId = String(active.id);
     const overId = String(over.id);
+    
+    console.log('Drag end:', { activeId, overId, activeItem });
 
     if (!activeItem) {
       setActiveItem(null);
@@ -213,15 +235,11 @@ export default function SupermarketDragDrop() {
         const pos = parseInt(overId.split("-")[1], 10);
         const aisleAtSpot = aisles.find((a) => a.position === pos);
         if (aisleAtSpot) {
-          setProducts((prev) => prev.filter((p) => p.id !== activeItem.id));
-          setAisles((prev) =>
-            prev.map((a) =>
-              a.id === aisleAtSpot.id
-                ? { ...a, products: [...a.products, activeItem] }
-                : a
-            )
-          );
+          addProductToAisle(activeItem, aisleAtSpot.id);
         }
+      } else if (overId.startsWith("aisle-drop-")) {
+        const aisleId = overId.replace("aisle-drop-", "");
+        addProductToAisle(activeItem, aisleId);
       }
       setActiveItem(null);
       return;
@@ -291,12 +309,33 @@ export default function SupermarketDragDrop() {
     setProducts((prev) => [...prev, product]);
   };
 
+  const addProductToAisle = (product: Product, aisleId: string) => {
+    setAisles((prev) =>
+      prev.map((a) =>
+        a.id === aisleId
+          ? { ...a, products: [...a.products, product] }
+          : a
+      )
+    );
+
+    setProducts((prev) => prev.filter((p) => p.id !== product.id));
+  };
+
+  const updateAisleName = (aisleId: string, newName: string) => {
+    setAisles((prev) =>
+      prev.map((a) =>
+        a.id === aisleId ? { ...a, name: newName } : a
+      )
+    );
+  };
+
   const addNewAisle = () => {
+    const colorIndex = aisles.length % aisleColors.length;
     const newAisle: Aisle = {
       id: `aisle-${Date.now()}`,
       name: `New Aisle`,
       products: [],
-      color: aisleColors[aisles.length % aisleColors.length],
+      color: getColorString(aisleColors[colorIndex]),
       position: null,
     };
     setAisles((prev) => [...prev, newAisle]);
@@ -307,17 +346,17 @@ export default function SupermarketDragDrop() {
       entrance: {
         name: "New Entrance",
         emoji: "🚪",
-        color: "bg-green-100 border-green-500",
+        color: getColorString("green"),
       },
       exit: {
         name: "New Exit",
         emoji: "🚶",
-        color: "bg-red-100 border-red-500",
+        color: getColorString("red"),
       },
       checkout: {
         name: "New Checkout",
         emoji: "🛒",
-        color: "bg-orange-100 border-orange-500",
+        color: getColorString("orange"),
       },
     };
     const config = featureConfig[type];
@@ -408,7 +447,10 @@ export default function SupermarketDragDrop() {
               const aisle = gridSpots[i].aisle;
               if (aisle) removeProductFromAisle(productId, aisle.id);
             }}
+            onAddProduct={addProductToAisle}
+            onUpdateName={updateAisleName}
             isDraggingProduct={!!isDraggingProduct}
+            showContents={showAisleContents}
           />
         );
       }
@@ -440,8 +482,21 @@ export default function SupermarketDragDrop() {
 
           {row < rows - 1 && (
             <div className="relative my-4">
-              <div className="h-8 bg-gradient-to-r from-blue-100 via-blue-200 to-blue-100 rounded-full flex items-center justify-center border-2 border-blue-300 border-dashed mx-20">
-                <span className="text-blue-700 font-medium text-sm">
+              <div
+                className="h-8 rounded-full flex items-center justify-center border-2 border-dashed mx-20"
+                style={{
+                  background:
+                    "linear-gradient(to right, #dbeafe, #bfdbfe, #dbeafe)",
+                  borderColor: "#93c5fd",
+                }}
+              >
+                <span
+                  style={{
+                    color: "#1d4ed8",
+                    fontWeight: "500",
+                    fontSize: "0.875rem",
+                  }}
+                >
                   ← PATHWAY {row + 1} →
                 </span>
               </div>
@@ -610,6 +665,9 @@ export default function SupermarketDragDrop() {
                           onRemoveProduct={(productId) =>
                             removeProductFromAisle(productId, aisle.id)
                           }
+                          onAddProduct={(product) => addProductToAisle(product, aisle.id)}
+                          onUpdateName={(newName) => updateAisleName(aisle.id, newName)}
+                          showContents={showAisleContents}
                         />
                         <button
                           onClick={() => removeAisle(aisle.id)}
@@ -700,7 +758,13 @@ export default function SupermarketDragDrop() {
               <DraggableProduct product={activeItem} isDragging />
             )}
             {activeItem && "products" in activeItem && (
-              <DraggableAisle aisle={activeItem} onRemoveProduct={() => {}} />
+              <DraggableAisle
+                aisle={activeItem}
+                onRemoveProduct={() => {}}
+                onAddProduct={() => {}}
+                onUpdateName={() => {}}
+                showContents={showAisleContents}
+              />
             )}
             {activeItem && "type" in activeItem && (
               <DraggableStoreFeature feature={activeItem} />

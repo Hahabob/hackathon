@@ -3,18 +3,24 @@ import cn from "classnames";
 import { useDroppable } from "@dnd-kit/core";
 import { Package } from "lucide-react";
 import type { GridSpot } from "./types";
-import DraggableAisle from "./DraggableAisle";
+import DraggableAisle from "./Aisle";
 
 interface GridSpotComponentProps {
   spot: GridSpot;
   onRemoveAisle: (productId: string) => void;
+  onAddProduct?: (product: any, aisleId: string) => void;
+  onUpdateName?: (aisleId: string, newName: string) => void;
   isDraggingProduct: boolean;
+  showContents?: boolean;
 }
 
 export default function GridSpotComponent({
   spot,
   onRemoveAisle,
+  onAddProduct,
+  onUpdateName,
   isDraggingProduct,
+  showContents = true,
 }: GridSpotComponentProps) {
   const { setNodeRef, isOver } = useDroppable({
     id: `spot-${spot.position}`,
@@ -34,7 +40,14 @@ export default function GridSpotComponent({
       )}
     >
       {spot.aisle ? (
-        <DraggableAisle aisle={spot.aisle} onRemoveProduct={onRemoveAisle} />
+        <DraggableAisle 
+          aisle={spot.aisle} 
+          onRemoveProduct={onRemoveAisle} 
+          onAddProduct={onAddProduct ? (product) => onAddProduct(product, spot.aisle!.id) : undefined}
+          onUpdateName={onUpdateName ? (newName) => onUpdateName(spot.aisle!.id, newName) : undefined}
+          showContents={showContents} 
+          fullHeight={true} 
+        />
       ) : (
         <div className="flex items-center justify-center h-full text-gray-400">
           <div className="text-center">
