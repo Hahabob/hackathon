@@ -2,7 +2,6 @@ import { Response, NextFunction } from "express";
 import Cart from "../models/Cart";
 import Product from "../models/Product";
 import { AuthRequest } from "../middleware/auth";
-import mongoose from "mongoose";
 
 const calculateCartTotals = (cart: any) => {
   let totalPrice = 0;
@@ -29,6 +28,7 @@ export const getCart = async (
     const cart = await Cart.findOne({ userId: req.user!.userId }).populate(
       "items.productId"
     );
+
     if (!cart) {
       return res.status(200).json({
         userId: req.user!.userId,
@@ -38,10 +38,20 @@ export const getCart = async (
       });
     }
 
+    console.log("logging cart from cart controller", cart);
+
+    const updatedCart = cart.toObject().items.map((item) => {
+      const updatedItem = item;
+
+      updatedItem.product = item.productId;
+      delete updatedItem.productId;
+      return updatedItem;
+    });
+
     const { totalItems, totalPrice } = calculateCartTotals(cart);
 
     res.json({
-      ...cart.toObject(),
+      items: updatedCart,
       totalItems,
       totalPrice,
     });
@@ -57,6 +67,9 @@ export const addItem = async (
 ) => {
   try {
     const { productId, quantity } = req.body;
+    console.log("=========");
+
+    console.log("logging item from addItem", req.body);
 
     const productExists = await Product.exists({ _id: productId });
     if (!productExists) {
@@ -75,7 +88,7 @@ export const addItem = async (
     } else {
       // Check if item already exists in cart
       const existingItemIndex = cart.items.findIndex(
-        (item) => item.productId.toString() === productId.toString()
+        (item) => item.productId!.toString() === productId.toString()
       );
 
       if (existingItemIndex !== -1) {

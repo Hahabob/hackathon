@@ -10,7 +10,7 @@ type Props = {
 const ProductItem = ({ product, onClick }: Props) => {
   const { cart, addToCart, decrementItem } = useCart();
 
-  const cartItem = cart.find((item) => item.productId === product._id);
+  const cartItem = cart.find((item) => item.product._id === product._id);
   const quantity = cartItem?.quantity || 0;
 
   return (
@@ -36,7 +36,7 @@ const ProductItem = ({ product, onClick }: Props) => {
         <span className="min-w-[24px] text-center">{quantity}</span>
 
         <Button
-          onClick={() => addToCart({ productId: product._id, quantity: 1 })}
+          onClick={() => addToCart({ product: product, quantity: 1 })}
           className="px-2 py-1 bg-green-100 rounded hover:bg-green-200 text-black"
         >
           +
