@@ -18,14 +18,12 @@ const AuthController = {
         return;
       }
 
-      // Check if user already exists
       const existingUser = await UserModel.findOne({ email });
       if (existingUser) {
         res.status(400).json({ message: "User already exists" });
         return;
       }
 
-      // Create new user
       const hashedPassword = await bcrypt.hash(password, 10);
 
       const user = await UserModel.create({
@@ -44,12 +42,11 @@ const AuthController = {
         isAdmin: user.isAdmin,
       });
 
-      // Set HTTP-only cookie
       res.cookie("accessToken", token, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
         sameSite: "strict",
-        maxAge: 24 * 60 * 60 * 1000, // 24 hours
+        maxAge: 24 * 60 * 60 * 1000,
       });
 
       res.status(201).json({
@@ -71,14 +68,12 @@ const AuthController = {
     try {
       const { email, password }: LoginRequest = req.body;
 
-      // Find user
       const user = await UserModel.findOne({ email });
       if (!user) {
         res.status(400).json({ message: "Invalid credentials" });
         return;
       }
 
-      // Validate password
       const isValid = validatePassword(password, user.password);
       if (!isValid) {
         res.status(400).json({ message: "Invalid credentials" });
@@ -92,7 +87,6 @@ const AuthController = {
         isAdmin: user.isAdmin,
       });
 
-      // Set HTTP-only cookie
       res.cookie("accessToken", token, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
