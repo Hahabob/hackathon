@@ -6,6 +6,7 @@ import dotenv from "dotenv";
 import authRoutes from "./routes/auth";
 import SuperMarketRoutes from "./routes/superMarket";
 import ProductRoutes from "./routes/product";
+import cartRoutes from "./routes/cart";
 import { errorHandler, notFoundHandler } from "./middleware/errorHandler";
 import mongoose from "mongoose";
 
@@ -49,6 +50,7 @@ app.use(morgan("tiny"));
 app.use("/api/auth", authRoutes);
 app.use("/api/supermarket", SuperMarketRoutes);
 app.use("/api/product", ProductRoutes);
+app.use("/api/cart", cartRoutes);
 
 // Health check endpoint
 app.get("/api/health", (req, res) => {
