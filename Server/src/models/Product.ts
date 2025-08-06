@@ -5,7 +5,8 @@ interface IProduct extends Document {
   name: string;
   producer: string;
   category: string;
-  barcode: string;
+  barcode: number;
+  price: number;
   location?: {
     x: number;
     y: number;
@@ -26,6 +27,14 @@ const productSchema = new Schema<IProduct>(
     },
     category: {
       type: String,
+      require: true,
+    },
+    price: {
+      type: Number,
+      require: true,
+    },
+    barcode: {
+      type: Number,
       require: true,
     },
     location: {
