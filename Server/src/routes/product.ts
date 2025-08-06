@@ -30,3 +30,5 @@ router.delete(
   checkIsAdmin,
   ProductController.delete
 );
+
+export default router;
