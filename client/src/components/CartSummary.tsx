@@ -2,14 +2,14 @@
 // It will interact with CartContext.tsx to get the cart's subtotal, taxes, and total.
 // Best practice: Keep this component simple and focused on displaying the final costs.
 // Include a clear call-to-action button for checkout.
-
+import { useNavigate } from "react-router-dom";
 import { ShoppingCart, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import useCart from "@/hooks/useCart";
 
 export default function CartSummary() {
   const { cart, loading, clearCart } = useCart();
-
+  const navigate = useNavigate();
   // Calculate totals from cart items
   const getTotalItems = () => {
     return cart.reduce((total, item) => total + item.quantity, 0);
@@ -28,27 +28,14 @@ export default function CartSummary() {
   if (loading || totalItems === 0) {
     return null;
   }
-
   const handleNavigateToCart = () => {
-    // For now, just console log until cart page is created
-    console.log("Navigate to cart page - to be implemented");
-    console.log("Current cart:", cart);
-    console.log(
-      `Total items: ${totalItems}, Total price: ₪${totalPrice.toFixed(2)}`
-    );
-
-    // Alternative: You could show an alert or modal for now
-    alert(
-      `🛒 עגלת הקניות שלך:\n\n📦 ${totalItems} ${
-        totalItems === 1 ? "פריט" : "פריטים"
-      }\n💰 סה"כ: ₪${totalPrice.toFixed(2)}\n\n(עמוד עגלת הקניות יתווסף בהמשך)`
-    );
+    navigate("/cart");
   };
 
   return (
     <div className="fixed bottom-4 left-4 right-4 z-40 mx-auto max-w-sm">
       <Button
-        onClick={clearCart}
+        onClick={handleNavigateToCart}
         className="w-full h-16 bg-blue-600 hover:bg-blue-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-2xl relative overflow-hidden group"
         size="lg"
       >
