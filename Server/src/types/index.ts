@@ -22,4 +22,5 @@ export interface RegisterRequest {
 export interface AuthPayload {
   userId: Types.ObjectId;
   email: string;
+  isAdmin: boolean;
 }

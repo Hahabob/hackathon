@@ -2,13 +2,11 @@ import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import { AuthPayload } from "../types";
 import dotenv from "dotenv";
-import { RecepieDocument } from "../models/Recepie";
 
 dotenv.config();
 
 export interface AuthRequest extends Request {
   user?: AuthPayload;
-  recepie?: RecepieDocument;
 }
 
 const JWT_SECRET = process.env.JWT_SECRET;
@@ -49,4 +47,15 @@ export const authenticateToken = (
 
 export const generateAccessToken = (payload: AuthPayload): string => {
   return jwt.sign(payload, JWT_SECRET, { expiresIn: "24h" });
+};
+
+export const checkIsAdmin = (
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  if (req.user?.isAdmin) {
+    return next();
+  }
+  return res.status(403).json({ error: "Admins only" });
 };
