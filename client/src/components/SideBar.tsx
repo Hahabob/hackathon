@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useSidebar } from "../contexts/SideBarContext";
+import { LoginForm } from "./forms/loginForm";
 
 const tabs = ["Login", "Signup", "Settings"];
 
@@ -40,26 +41,7 @@ export default function Sidebar() {
       </div>
 
       <div className="p-4">
-        {activeTab === "Login" && (
-          <form className="space-y-4">
-            <input
-              type="email"
-              placeholder="Email"
-              className="w-full px-3 py-2 border rounded"
-            />
-            <input
-              type="password"
-              placeholder="Password"
-              className="w-full px-3 py-2 border rounded"
-            />
-            <button
-              type="submit"
-              className="w-full bg-blue-600 text-white py-2 rounded"
-            >
-              Log In
-            </button>
-          </form>
-        )}
+        {activeTab === "Login" && <LoginForm />}
 
         {activeTab === "Signup" && (
           <form className="space-y-4">
