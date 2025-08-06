@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { Search, X } from "lucide-react";
 import { useSearch } from "../contexts/SearchContext";
 import { useFetchProducts } from "../hooks/useFetch";
