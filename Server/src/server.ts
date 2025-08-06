@@ -46,7 +46,7 @@ app.use(morgan("tiny"));
 
 // Routes
 app.use("/api/auth", authRoutes);
-app.use("/api/superMarket", SuperMarketRoutes);
+app.use("/api/supermarket", SuperMarketRoutes);
 
 // Health check endpoint
 app.get("/api/health", (req, res) => {

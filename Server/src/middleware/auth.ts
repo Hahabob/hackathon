@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import { AuthPayload } from "../types";
 import dotenv from "dotenv";
-
+import StoreDocument  from "../models/superMarket";
 dotenv.config();
 
 export interface AuthRequest extends Request {
