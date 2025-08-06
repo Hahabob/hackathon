@@ -5,6 +5,7 @@ export type CartContextType = {
   cart: CartItem[];
   addToCart: (item: CartItem) => void;
   removeFromCart: (productId: string) => void;
+  decrementItem: (productId: string) => void;
   clearCart: () => void;
   loading: boolean;
 };

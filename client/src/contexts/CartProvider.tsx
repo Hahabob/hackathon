@@ -58,12 +58,25 @@ const CartProvider = ({ children }: Props) => {
     setCart((prev) => prev.filter((item) => item.productId !== productId));
   };
 
+  const decrementItem = (productId: string) => {
+    setCart((prev) =>
+      prev
+        .map((item) =>
+          item.productId === productId
+            ? { ...item, quantity: item.quantity - 1 }
+            : item
+        )
+        .filter((item) => item.quantity > 0)
+    );
+  };
+
   const clearCart = () => setCart([]);
 
   const contextValue: CartContextType = {
     cart,
     addToCart,
     removeFromCart,
+    decrementItem,
     clearCart,
     loading,
   };

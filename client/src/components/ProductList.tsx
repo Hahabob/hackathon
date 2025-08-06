@@ -3,8 +3,8 @@
 // Best practice: Use distinct colors or icons to represent different product categories or zones.
 // Ensure the zones are interactive (e.g., show a tooltip on hover).
 import { useState } from "react";
-import ProductCard from "./ProductCard";
 import { useFetchProducts } from "../hooks/useFetch";
+import ProductItem from "./ProductItem";
 
 const ProductList = () => {
   const { data: products = [], isLoading, error } = useFetchProducts();
@@ -39,9 +39,9 @@ const ProductList = () => {
           </button>
 
           {openCategory === category && (
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-4">
+            <div className="flex flex-col space-y-2 mt-4">
               {productsInCategory.map((product) => (
-                <ProductCard key={product._id} product={product} />
+                <ProductItem key={product._id} product={product} />
               ))}
             </div>
           )}
