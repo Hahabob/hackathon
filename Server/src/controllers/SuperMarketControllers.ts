@@ -1,8 +1,6 @@
 import { AuthRequest } from "../middleware/auth";
-import { Request, Response } from "express";
+import {  Response } from "express";
 import superMarketModel from "../models/superMarket";
-import UserModel from "../models/User";
-import { Types } from "mongoose";
 const SuperMarketController = {
   async createStore(req: AuthRequest, res: Response) {
     try {
