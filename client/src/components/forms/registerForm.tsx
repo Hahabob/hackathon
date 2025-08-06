@@ -13,7 +13,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useAuth } from "@/contexts/AuthContext";
 import z from "zod";
-import { useNavigate } from "react-router-dom";
+import { useSidebar } from "@/contexts/SideBarContext";
 
 const RegisterFormSchema = z
   .object({
@@ -46,7 +46,7 @@ export function RegisterForm() {
   });
 
   const { register } = useAuth();
-  const navigate = useNavigate();
+  const { closeSidebar } = useSidebar();
 
   const onSubmit = async (data: RegisterFormData) => {
     try {
@@ -56,7 +56,7 @@ export function RegisterForm() {
       console.log(success);
 
       if (success) {
-        navigate("/");
+        closeSidebar();
       } else {
         alert("Registration failed.");
       }

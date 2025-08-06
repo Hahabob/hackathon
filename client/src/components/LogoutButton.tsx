@@ -1,19 +1,19 @@
 import { useAuth } from "@/contexts/AuthContext";
+import { useSidebar } from "@/contexts/SideBarContext";
 import { api } from "@/utils/api";
 import { useQueryClient } from "@tanstack/react-query";
-import { useNavigate } from "react-router-dom";
 
 export default function LogoutButton() {
   const queryClient = useQueryClient();
-  const navigate = useNavigate();
 
   const { logout } = useAuth();
+  const { closeSidebar } = useSidebar();
   const handleLogout = async () => {
     try {
       await api.post("/auth/logout", null, { withCredentials: true });
       logout();
       queryClient.removeQueries({ queryKey: ["currentUser"] });
-      navigate("/");
+      closeSidebar();
     } catch (err) {
       console.error("Logout failed", err);
     }

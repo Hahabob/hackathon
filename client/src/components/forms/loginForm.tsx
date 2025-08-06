@@ -13,7 +13,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useAuth } from "@/contexts/AuthContext";
 import z from "zod";
-import { useNavigate } from "react-router-dom";
+import { useSidebar } from "@/contexts/SideBarContext";
 const LoginFormSchema = z.object({
   email: z.string().email("Invalid email address"),
   password: z.string().min(8, "Password must be at least 8 characters"),
@@ -31,13 +31,13 @@ export function LoginForm() {
   });
 
   const { login } = useAuth();
-  const navigate = useNavigate();
+  const { closeSidebar } = useSidebar();
 
   const onSubmit = async (data: LoginFormData) => {
     const success = await login(data.email, data.password);
 
     if (success) {
-      navigate("/home");
+      closeSidebar();
     } else {
       alert(" Login failed");
     }
