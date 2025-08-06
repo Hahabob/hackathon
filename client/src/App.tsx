@@ -14,6 +14,7 @@ import GlobalSearchBar from "./components/GlobalSearchBar";
 import ProductCard from "./components/ProductCard";
 import StartPage from "./pages/StartPage";
 import Cart from "./pages/ShoppingCartPage";
+import MapPage from "./pages/MapPage";
 
 // import Header from "./components/Header";
 // import Navigation from "./components/Navigation";
@@ -42,6 +43,7 @@ const App = () => {
           <Route path="/" element={<StartPage />} />
           <Route path="products" element={<ProductCatalogPage />} />
           <Route path="cart" element={<Cart />} />
+          <Route path="map" element={<MapPage />} />
         </Routes>
       </BrowserRouter>
 
