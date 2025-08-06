@@ -36,7 +36,7 @@ const ProductItem = ({ product, onClick }: Props) => {
         <span className="min-w-[24px] text-center">{quantity}</span>
 
         <Button
-          onClick={() => addToCart({ product: product, quantity: 1 })}
+          onClick={() => addToCart(product, 1)}
           className="px-2 py-1 bg-green-100 rounded hover:bg-green-200 text-black"
         >
           +

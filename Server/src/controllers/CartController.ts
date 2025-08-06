@@ -40,18 +40,16 @@ export const getCart = async (
 
     console.log("logging cart from cart controller", cart);
 
-    const updatedCart = cart.toObject().items.map((item) => {
-      const updatedItem = item;
-
-      updatedItem.product = item.productId;
-      delete updatedItem.productId;
-      return updatedItem;
-    });
+    // Transform cart items to match frontend expectations
+    const transformedItems = cart.items.map((item: any) => ({
+      product: item.productId, // productId is populated with full product object
+      quantity: item.quantity,
+    }));
 
     const { totalItems, totalPrice } = calculateCartTotals(cart);
 
     res.json({
-      items: updatedCart,
+      items: transformedItems,
       totalItems,
       totalPrice,
     });
@@ -67,9 +65,11 @@ export const addItem = async (
 ) => {
   try {
     const { productId, quantity } = req.body;
-    console.log("=========");
-
-    console.log("logging item from addItem", req.body);
+    console.log("=== ADD ITEM DEBUG ===");
+    console.log("Request body:", req.body);
+    console.log("ProductId:", productId);
+    console.log("Quantity:", quantity);
+    console.log("User ID:", req.user?.userId);
 
     const productExists = await Product.exists({ _id: productId });
     if (!productExists) {
@@ -112,10 +112,16 @@ export const addItem = async (
         .json({ message: "Failed to retrieve updated cart" });
     }
 
+    // Transform cart items to match frontend expectations
+    const transformedItems = updatedCart.items.map((item: any) => ({
+      product: item.productId, // productId is populated with full product object
+      quantity: item.quantity,
+    }));
+
     const { totalItems, totalPrice } = calculateCartTotals(updatedCart);
 
     res.json({
-      ...updatedCart.toObject(),
+      items: transformedItems,
       totalItems,
       totalPrice,
     });
@@ -143,10 +149,16 @@ export const updateQuantity = async (
       return res.status(404).json({ message: "Cart item not found" });
     }
 
+    // Transform cart items to match frontend expectations
+    const transformedItems = cart.items.map((item: any) => ({
+      product: item.productId, // productId is populated with full product object
+      quantity: item.quantity,
+    }));
+
     const { totalItems, totalPrice } = calculateCartTotals(cart);
 
     res.json({
-      ...cart.toObject(),
+      items: transformedItems,
       totalItems,
       totalPrice,
     });
@@ -173,15 +185,19 @@ export const removeItem = async (
       return res.status(404).json({ message: "Cart not found" });
     }
 
+    // Transform cart items to match frontend expectations
+    const transformedItems = cart.items.map((item: any) => ({
+      product: item.productId, // productId is populated with full product object
+      quantity: item.quantity,
+    }));
+
     const { totalItems, totalPrice } = calculateCartTotals(cart);
 
     res.json({
       message: "Item removed from cart",
-      cart: {
-        ...cart.toObject(),
-        totalItems,
-        totalPrice,
-      },
+      items: transformedItems,
+      totalItems,
+      totalPrice,
     });
   } catch (err) {
     next(err);
@@ -206,11 +222,9 @@ export const clearCart = async (
 
     res.json({
       message: "Cart cleared successfully",
-      cart: {
-        ...cart.toObject(),
-        totalItems: 0,
-        totalPrice: 0,
-      },
+      items: [],
+      totalItems: 0,
+      totalPrice: 0,
     });
   } catch (err) {
     next(err);

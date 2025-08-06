@@ -10,7 +10,7 @@ type Props = {
 const ProductCard = ({ product, onClose }: Props) => {
   const { cart, addToCart, decrementItem, removeFromCart } = useCart();
   const quantity =
-    cart.find((item) => item.productId === product._id)?.quantity || 0;
+    cart.find((item) => item.product._id === product._id)?.quantity || 0;
 
   return (
     <div className="fixed top-4 left-1/2 transform -translate-x-1/2 w-[90%] max-w-xl z-50 bg-white border rounded-2xl shadow-2xl p-6">
@@ -41,7 +41,7 @@ const ProductCard = ({ product, onClose }: Props) => {
         </button>
         <span className="text-lg">{quantity}</span>
         <button
-          onClick={() => addToCart({ productId: product._id, quantity: 1 })}
+          onClick={() => addToCart(product, 1)}
           className="bg-green-100 p-2 rounded hover:bg-green-200"
         >
           <Plus size={16} />
