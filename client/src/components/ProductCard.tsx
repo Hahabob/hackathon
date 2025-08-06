@@ -18,7 +18,7 @@ const ProductCard = ({ product }: Props) => {
       <h3 className="text-lg font-semibold">{product.name}</h3>
       <p className="text-sm text-gray-600">{product.category}</p>
       <p className="mt-1 font-bold text-blue-600">
-        ${product.price.toFixed(2)}
+        ₪{product.price.toFixed(2)}
       </p>
       <button
         onClick={() => addToCart({ productId: product.id, quantity: 1 })}

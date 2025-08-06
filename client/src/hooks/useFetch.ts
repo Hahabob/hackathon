@@ -8,13 +8,12 @@ import { useQuery } from "@tanstack/react-query";
 import { api } from "../utils/api";
 import type { Product } from "../types/Product";
 
-export function useFetchProducts(storeId: string) {
+export function useFetchProducts() {
   return useQuery<Product[]>({
-    queryKey: ["products", storeId],
+    queryKey: ["product"],
     queryFn: async () => {
-      const response = await api.get(`/supermarket/${storeId}/products`);
+      const response = await api.get(`/product`);
       return response.data.data;
     },
-    enabled: !storeId,
   });
 }

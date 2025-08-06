@@ -9,9 +9,9 @@ import { useFetchProducts } from "../hooks/useFetch";
 const ProductList = () => {
   const { storeId } = useParams<{ storeId: string }>();
 
-  if (!storeId) return <p>didnt find store ID</p>;
+  //   if (!storeId) return <p>didnt find store ID</p>;
 
-  const { data: products = [], isLoading, error } = useFetchProducts(storeId);
+  const { data: products = [], isLoading, error } = useFetchProducts();
 
   if (isLoading) return <p>loading your products...</p>;
   if (error) return <p> error fetching products</p>;

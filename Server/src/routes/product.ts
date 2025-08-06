@@ -10,8 +10,8 @@ router.post(
   checkIsAdmin,
   ProductController.create
 );
-router.get("/", ProductController.get);
-router.get("/:productId", ProductController.getAll);
+router.get("/", ProductController.getAll);
+router.get("/:productId", ProductController.get);
 router.patch(
   "/:productId",
   authenticateToken,
