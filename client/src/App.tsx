@@ -45,6 +45,7 @@ const App = () => {
           <Route path="/cart" element={<ShoppingCartPage />} />
           <Route path="/stores" element={<StoreSelectorPage />} />
           <Route path="/summary" element={<Summary />} />
+          <Route path="/map" element={<MapPage />} />
         </Routes>
       </BrowserRouter>
 

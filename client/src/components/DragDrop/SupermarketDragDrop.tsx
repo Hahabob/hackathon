@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   DndContext,
   DragOverlay,
@@ -25,32 +25,22 @@ import {
   EyeOff,
 } from "lucide-react";
 
-import type {
-  Product,
-  Aisle,
-  StoreFeature,
-  BorderSpot,
-  GridSpot,
-} from "./types";
+import type { Aisle, StoreFeature, BorderSpot, GridSpot } from "./types";
 
+import type { Product } from "@/types/Product";
 import DraggableProduct from "./DraggableProduct";
 import DraggableAisle from "./DraggableAisle";
 import DraggableStoreFeature from "./DraggableStoreFeature";
 
 import BorderSpotComponent from "./BorderSpotComponent";
 import GridSpotComponent from "./GridSpotComponent";
+import { useFetchProducts } from "@/hooks/useFetch";
 
 const aisleColors = [
   "bg-blue-100 border-blue-500",
   "bg-green-100 border-green-500",
   "bg-yellow-100 border-yellow-500",
   "bg-purple-100 border-purple-500",
-];
-
-const initialProducts: Product[] = [
-  { id: "p1", name: "Milk", price: 1.5 },
-  { id: "p2", name: "Bread", price: 2.0 },
-  { id: "p3", name: "Eggs", price: 3.0 },
 ];
 
 const initialAisles: Aisle[] = [
@@ -98,7 +88,7 @@ const initialStoreFeatures: StoreFeature[] = [
 ];
 
 export default function SupermarketDragDrop() {
-  const [products, setProducts] = useState<Product[]>(initialProducts);
+  const [products, setProducts] = useState<Product[]>([]);
   const [aisles, setAisles] = useState<Aisle[]>(initialAisles);
   const [storeFeatures, setStoreFeatures] =
     useState<StoreFeature[]>(initialStoreFeatures);
@@ -113,6 +103,14 @@ export default function SupermarketDragDrop() {
       activationConstraint: { distance: 8 },
     })
   );
+
+  const { data: fetchedProducts } = useFetchProducts();
+
+  useEffect(() => {
+    if (fetchedProducts) {
+      setProducts(fetchedProducts);
+    }
+  }, [fetchedProducts]);
 
   // Dragging flags
   const isDraggingProduct = activeItem && "price" in activeItem;
@@ -174,7 +172,7 @@ export default function SupermarketDragDrop() {
     const id = active.id;
 
     // Find dragged item in products, aisles, or features
-    const draggedProduct = products.find((p) => p.id === id);
+    const draggedProduct = products.find((p) => p._id === id);
     if (draggedProduct) {
       setActiveItem(draggedProduct);
       return;
@@ -200,10 +198,7 @@ export default function SupermarketDragDrop() {
       setActiveItem(null);
       return;
     }
-
-    const activeId = String(active.id);
     const overId = String(over.id);
-
     if (!activeItem) {
       setActiveItem(null);
       return;
@@ -213,11 +208,11 @@ export default function SupermarketDragDrop() {
         const pos = parseInt(overId.split("-")[1], 10);
         const aisleAtSpot = aisles.find((a) => a.position === pos);
         if (aisleAtSpot) {
-          setProducts((prev) => prev.filter((p) => p.id !== activeItem.id));
+          setProducts((prev) => prev.filter((p) => p._id !== activeItem._id));
           setAisles((prev) =>
             prev.map((a) =>
               a.id === aisleAtSpot.id
-                ? { ...a, products: [...a.products, activeItem] }
+                ? { ...a, products: [...a.products, activeItem as Product] }
                 : a
             )
           );
@@ -277,13 +272,13 @@ export default function SupermarketDragDrop() {
     const aisle = aisles.find((a) => a.id === aisleId);
     if (!aisle) return;
 
-    const product = aisle.products.find((p) => p.id === productId);
+    const product = aisle.products.find((p) => p._id === productId);
     if (!product) return;
 
     setAisles((prev) =>
       prev.map((a) =>
         a.id === aisleId
-          ? { ...a, products: a.products.filter((p) => p.id !== productId) }
+          ? { ...a, products: a.products.filter((p) => p._id !== productId) }
           : a
       )
     );
@@ -524,12 +519,12 @@ export default function SupermarketDragDrop() {
                   </h2>
                 </div>
                 <SortableContext
-                  items={products.map((p) => p.id)}
+                  items={products.map((p) => p._id)}
                   strategy={verticalListSortingStrategy}
                 >
                   <div className="space-y-2 max-h-[300px] overflow-y-auto">
                     {products.map((product) => (
-                      <DraggableProduct key={product.id} product={product} />
+                      <DraggableProduct key={product._id} product={product} />
                     ))}
                     {products.length === 0 && (
                       <div className="text-center text-gray-400 py-8 text-sm">

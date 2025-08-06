@@ -1,10 +1,4 @@
-// src/components/SupermarketDragDrop/types.ts
-export interface Product {
-  id: string;
-  name: string;
-  price: number;
-  // other product fields if needed
-}
+import type { Product } from "@/types/Product";
 
 export interface Aisle {
   id: string;
