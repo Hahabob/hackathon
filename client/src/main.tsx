@@ -7,17 +7,20 @@ import App from "./App";
 import "./index.css";
 
 import CartProvider from "./contexts/CartProvider";
+import { AuthProvider } from "./contexts/AuthContext";
 
 const queryClient = new QueryClient();
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <SidebarProvider>
-    <QueryClientProvider client={queryClient}>
-      <CartProvider>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
-      </CartProvider>
-    </QueryClientProvider>
-  </SidebarProvider>
+  <AuthProvider>
+    <SidebarProvider>
+      <QueryClientProvider client={queryClient}>
+        <CartProvider>
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+        </CartProvider>
+      </QueryClientProvider>
+    </SidebarProvider>
+  </AuthProvider>
 );
