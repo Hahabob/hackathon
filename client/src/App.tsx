@@ -35,9 +35,7 @@ const App = () => {
         </button>
         <GlobalSearchBar />
       </div>
-
       <Sidebar />
-
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<StartPage />} />
