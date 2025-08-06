@@ -8,6 +8,7 @@ import { useFetchProducts } from "../hooks/useFetch";
 
 const ProductList = () => {
   const { data: products = [], isLoading, error } = useFetchProducts();
+  const [openCategory, setOpenCategory] = useState<string | null>(null);
 
   if (isLoading) return <p>loading your products...</p>;
   if (error) return <p>error fetching products</p>;
@@ -22,9 +23,6 @@ const ProductList = () => {
     },
     {}
   );
-
-  // Optional: track open category dropdowns
-  const [openCategory, setOpenCategory] = useState<string | null>(null);
 
   return (
     <div className="p-4 space-y-4">
