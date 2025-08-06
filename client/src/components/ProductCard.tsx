@@ -35,7 +35,7 @@ const ProductCard = ({ product }: Props) => {
       </p>
 
       <button
-        onClick={() => addToCart({ productId: product.id, quantity: 1 })}
+        onClick={() => addToCart({ productId: product._id, quantity: 1 })}
         className="mt-5 bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 text-white font-semibold py-3 rounded-3xl shadow-lg
                hover:from-pink-500 hover:via-red-500 hover:to-yellow-500
                active:scale-95 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-pink-300"

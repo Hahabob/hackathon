@@ -2,27 +2,55 @@
 // It will receive layout and product data and interact with MapCanvas.tsx to draw on the map.
 // Best practice: Use distinct colors or icons to represent different product categories or zones.
 // Ensure the zones are interactive (e.g., show a tooltip on hover).
-import { useParams } from "react-router-dom";
+import { useState } from "react";
 import ProductCard from "./ProductCard";
 import { useFetchProducts } from "../hooks/useFetch";
 
 const ProductList = () => {
-  const { storeId } = useParams<{ storeId: string }>();
-
-  //   if (!storeId) return <p>didnt find store ID</p>;
-
   const { data: products = [], isLoading, error } = useFetchProducts();
 
   if (isLoading) return <p>loading your products...</p>;
-  if (error) return <p> error fetching products</p>;
+  if (error) return <p>error fetching products</p>;
   if (products.length === 0) return <p>no products to display</p>;
 
+  // Group products by category
+  const grouped = products.reduce(
+    (acc: Record<string, typeof products>, product) => {
+      acc[product.category] = acc[product.category] || [];
+      acc[product.category].push(product);
+      return acc;
+    },
+    {}
+  );
+
+  // Optional: track open category dropdowns
+  const [openCategory, setOpenCategory] = useState<string | null>(null);
+
   return (
-    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
-      {products.map((product) => (
-        <ProductCard key={product.id} product={product} />
+    <div className="p-4 space-y-4">
+      {Object.entries(grouped).map(([category, productsInCategory]) => (
+        <div key={category} className="border rounded-lg p-4 shadow">
+          <button
+            className="w-full flex justify-between items-center text-left font-semibold text-lg"
+            onClick={() =>
+              setOpenCategory(openCategory === category ? null : category)
+            }
+          >
+            {category}
+            <span>{openCategory === category ? "▲" : "▼"}</span>
+          </button>
+
+          {openCategory === category && (
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-4">
+              {productsInCategory.map((product) => (
+                <ProductCard key={product._id} product={product} />
+              ))}
+            </div>
+          )}
+        </div>
       ))}
     </div>
   );
 };
+
 export default ProductList;

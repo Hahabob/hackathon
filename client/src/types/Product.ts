@@ -3,7 +3,7 @@
 // Best practice: Keep the type definition clear and well-documented.
 // Ensure it matches the data structure returned by the backend API.
 export interface Product {
-  id: string;
+  _id: string;
   name: string;
   price: number;
   image?: string;
