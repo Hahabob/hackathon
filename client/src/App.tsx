@@ -35,6 +35,7 @@ const App = () => {
       </div>
 
       <Sidebar />
+  
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<StartPage />} />
