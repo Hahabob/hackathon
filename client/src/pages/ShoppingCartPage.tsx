@@ -12,7 +12,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import Header from "../layout/Header";
 import BottomNav from "../layout/ButtonNav";
 
-const Cart = () => {
+const ShoppingCartPage = () => {
   const { cart, updateQuantity, removeFromCart, loading } = useCart();
   const navigate = useNavigate();
 
@@ -29,7 +29,7 @@ const Cart = () => {
       <div className="min-h-screen bg-background">
         <Header title="Cart" showBackButton />
 
-        <div className="container mx-auto px-4 py-12 text-center">
+        <div className="container mx-auto px-4 py-12 text-center pt-20 pb-32">
           <div className="max-w-md mx-auto">
             <ShoppingCart className="h-20 w-20 text-muted-foreground mx-auto mb-6" />
             <h2 className="text-2xl font-bold text-foreground mb-2">
@@ -50,10 +50,10 @@ const Cart = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background pb-28">
+    <div className="min-h-screen bg-background">
       <Header title="Cart" showBackButton />
 
-      <div className="container mx-auto px-4 py-6 space-y-6">
+      <div className="container mx-auto px-4 py-6 space-y-6 pt-20 pb-32">
         {/* Items */}
         <div className="space-y-4">
           {cart.map((item) => (
@@ -155,12 +155,21 @@ const Cart = () => {
 
       {/* CTA */}
       <div className="fixed bottom-20 left-0 right-0 p-4 bg-background border-t border-border">
-        <Button
-          onClick={() => navigate("/stores")}
-          className="w-full h-12 text-base"
-        >
-          Choose Supermarket
-        </Button>
+        <div className="grid grid-cols-2 gap-4">
+          <Button
+            variant="outline"
+            onClick={() => navigate("/products")}
+            className="h-12 text-base"
+          >
+            Continue Shopping
+          </Button>
+          <Button
+            onClick={() => navigate("/stores")}
+            className="h-12 text-base"
+          >
+            Choose Store
+          </Button>
+        </div>
       </div>
 
       <BottomNav />
@@ -168,4 +177,4 @@ const Cart = () => {
   );
 };
 
-export default Cart;
+export default ShoppingCartPage;

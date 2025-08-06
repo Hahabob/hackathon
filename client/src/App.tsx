@@ -3,7 +3,9 @@ import { Routes, Route } from "react-router-dom";
 import { BrowserRouter } from "react-router-dom";
 
 import ProductCatalogPage from "./pages/ProductCatalogPage";
-// import ShoppingCartPage from "./pages/ShoppingCartPage";
+import ShoppingCartPage from "./pages/ShoppingCartPage";
+import Summary from "./pages/Summary";
+import StoreSelectorPage from "./pages/StoreSelectorPage";
 // import MapPage from "./pages/MapPage";
 
 import Sidebar from "./components/SideBar";
@@ -38,7 +40,10 @@ const App = () => {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<StartPage />} />
-          <Route path="products" element={<ProductCatalogPage />} />
+          <Route path="/products" element={<ProductCatalogPage />} />
+          <Route path="/cart" element={<ShoppingCartPage />} />
+          <Route path="/stores" element={<StoreSelectorPage />} />
+          <Route path="/summary" element={<Summary />} />
         </Routes>
       </BrowserRouter>
 
