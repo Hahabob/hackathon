@@ -22,7 +22,7 @@ const ProductController = {
 
       res.status(201).json({
         success: true,
-        message: "recepie created successfully",
+        message: "product created successfully",
         data: newProduct,
       });
     } catch (error) {
