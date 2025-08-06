@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { api } from "@/utils/api";
 import CartContext, { type CartContextType } from "./CartContext";
 import type { CartItem } from "../types/CartItem";
+import type { Product } from "@/types/Product";
 
 interface Props {
   children: React.ReactNode;
@@ -26,44 +27,55 @@ const CartProvider = ({ children }: Props) => {
     fetchCart();
   }, []);
 
+  const createCart = async (items: CartItem[]) => {
+    console.log("Saving cart:", items);
+    try {
+      for (const item of items) {
+        const productId =
+          typeof item.product === "string" ? item.product : item.product._id;
+
+        await api.post(
+          "/cart",
+          {
+            productId,
+            quantity: item.quantity,
+          },
+          { withCredentials: true }
+        );
+      }
+    } catch (error) {
+      console.error("Failed to save cart", error);
+    }
+  };
+
   useEffect(() => {
     if (loading) return;
-
-    const saveCart = async () => {
-      try {
-        console.log("Saving cart:", cart);
-        await api.post("/cart", { items: cart }, { withCredentials: true });
-      } catch (error) {
-        console.error("Failed to save cart", error);
-      }
-    };
-
-    saveCart();
+    createCart(cart);
   }, [cart, loading]);
 
-  const addToCart = (item: CartItem) => {
+  const addToCart = (product: Product, quantity: number = 1) => {
     setCart((prev) => {
-      const existing = prev.find((p) => p.productId === item.productId);
+      const existing = prev.find((p) => p.product._id === product._id);
       if (existing) {
         return prev.map((p) =>
-          p.productId === item.productId
-            ? { ...p, quantity: p.quantity + item.quantity }
+          p.product._id === product._id
+            ? { ...p, quantity: p.quantity + quantity }
             : p
         );
       }
-      return [...prev, item];
+      return [...prev, { product, quantity }];
     });
   };
 
   const removeFromCart = (productId: string) => {
-    setCart((prev) => prev.filter((item) => item.productId !== productId));
+    setCart((prev) => prev.filter((item) => item.product._id !== productId));
   };
 
   const decrementItem = (productId: string) => {
     setCart((prev) =>
       prev
         .map((item) =>
-          item.productId === productId
+          item.product._id === productId
             ? { ...item, quantity: item.quantity - 1 }
             : item
         )
