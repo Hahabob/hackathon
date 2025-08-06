@@ -31,6 +31,7 @@ const CartProvider = ({ children }: Props) => {
 
     const saveCart = async () => {
       try {
+        console.log("Saving cart:", cart);
         await api.post("/cart", { items: cart }, { withCredentials: true });
       } catch (error) {
         console.error("Failed to save cart", error);
