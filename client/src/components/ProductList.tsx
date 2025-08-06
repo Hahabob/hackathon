@@ -5,10 +5,13 @@
 import { useState } from "react";
 import { useFetchProducts } from "../hooks/useFetch";
 import ProductItem from "./ProductItem";
+import type { Product } from "@/types/Product";
+import ProductCard from "./ProductCard";
 
 const ProductList = () => {
   const { data: products = [], isLoading, error } = useFetchProducts();
   const [openCategory, setOpenCategory] = useState<string | null>(null);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
   if (isLoading) return <p>loading your products...</p>;
   if (error) return <p>error fetching products</p>;
@@ -41,12 +44,28 @@ const ProductList = () => {
           {openCategory === category && (
             <div className="flex flex-col space-y-2 mt-4">
               {productsInCategory.map((product) => (
-                <ProductItem key={product._id} product={product} />
+                <ProductItem
+                  key={product._id}
+                  product={product}
+                  onClick={() => setSelectedProduct(product)}
+                />
               ))}
             </div>
           )}
         </div>
       ))}
+      {selectedProduct && (
+        <>
+          <div
+            className="fixed inset-0 bg-black/30 z-40"
+            onClick={() => setSelectedProduct(null)}
+          />
+          <ProductCard
+            product={selectedProduct}
+            onClose={() => setSelectedProduct(null)}
+          />
+        </>
+      )}
     </div>
   );
 };
