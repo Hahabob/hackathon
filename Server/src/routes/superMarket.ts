@@ -11,9 +11,16 @@ router.post(
   SuperMarketController.createStore
 );
 router.delete(
-  "/delete/:storeId",
+  "/:storeId",
   authenticateToken,
   checkIsAdmin,
   SuperMarketController.deleteStore
 );
+router.patch(
+  "/:storeId",
+  authenticateToken,
+  checkIsAdmin,
+  SuperMarketController.updateStore
+);
 export default router;
+
