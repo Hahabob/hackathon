@@ -25,7 +25,6 @@ const App = () => {
           <Route path="/map" element={<MapPage />} />
         </Routes>
       </main> */}
-      <ProductList />
       <button
         onClick={toggleSidebar}
         className="px-4 py-2 bg-blue-600 text-white rounded"
@@ -33,6 +32,7 @@ const App = () => {
         {user ? user.name?.charAt(0) : `sidebar`}
       </button>
       <Sidebar />
+      <ProductList />
     </>
   );
 };
