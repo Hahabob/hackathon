@@ -309,7 +309,7 @@ export default function SupermarketDragDrop() {
       )
     );
 
-    setProducts((prev) => prev.filter((p) => p.id !== product.id));
+    setProducts((prev) => prev.filter((p) => p._id !== product._id));
   };
 
   const updateAisleName = (aisleId: string, newName: string) => {
