@@ -21,7 +21,7 @@ router.get("/", getCart);
 
 router.post("/", validateAddToCart, addItem);
 
-router.put("/:productId", validateUpdateQuantity, updateQuantity);
+router.patch("/:productId", validateUpdateQuantity, updateQuantity);
 
 router.delete("/:productId", validateProductId, removeItem);
 
