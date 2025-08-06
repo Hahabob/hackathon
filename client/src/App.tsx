@@ -11,6 +11,7 @@ import { useSearch } from "./contexts/SearchContext";
 import ProductList from "./components/ProductList";
 import GlobalSearchBar from "./components/GlobalSearchBar";
 import ProductCard from "./components/ProductCard";
+import CartSummary from "./components/CartSummary";
 
 // import Header from "./components/Header";
 // import Navigation from "./components/Navigation";
@@ -35,7 +36,7 @@ const App = () => {
       <Sidebar />
       <ProductList />
 
-      {/* השתמש ב-ProductCard הקיים */}
+      <CartSummary />
       {selectedProduct && (
         <>
           <div
