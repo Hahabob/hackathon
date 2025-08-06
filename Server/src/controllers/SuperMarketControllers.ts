@@ -79,5 +79,26 @@ const SuperMarketController = {
     } catch (error) { console.error("Error updating store:", error);
     res.status(500).json({ success: false, message: "Server error during update" })}
   },
+  async getSuperMarket(req:AuthRequest,res:Response){
+     const { storeId } = req.params;
+     try {
+        const store = await superMarketModel.findById(storeId).populate(
+             "createdBy",
+             "name"
+           );
+              if (!store) {
+        res.status(400).json({ success: false, message: "store not found" });
+        return;
+      }
+        res.json({
+        data: store,
+        success: true,
+      }); 
+     } catch (error) {
+              console.error("Can't get store, check with admin:", error);
+      res.status(500).json({ message: "server error during get function" });
+     }
+       
+  }
 };
 export default SuperMarketController;

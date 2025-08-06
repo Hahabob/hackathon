@@ -22,5 +22,10 @@ router.patch(
   checkIsAdmin,
   SuperMarketController.updateStore
 );
-export default router;
+router.get(
+  "/:storeId",
+  authenticateToken,
+  SuperMarketController.getSuperMarket
+);
 
+export default router;
