@@ -1,44 +1,31 @@
-import React from "react";
-import { useSortable } from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
-import Shelf, { type ShelfType } from "./Shelf";
-import  type { AisleType } from "./SupermarketDragDrop";
+import type { Aisle as AisleType } from "./types";
 
 interface AisleProps {
   aisle: AisleType;
-  aisles: AisleType[];
-  setAisles: React.Dispatch<React.SetStateAction<AisleType[]>>;
+  onRemoveProduct: (productId: string) => void;
+  showContents: boolean;
 }
 
-const Aisle: React.FC<AisleProps> = ({ aisle, aisles, setAisles }) => {
-  const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id: aisle.id });
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-    border: "1px solid #aaa",
-    padding: "8px",
-    borderRadius: "8px",
-    width: "250px",
-    backgroundColor: "#fafafa",
-  };
-
+export default function Aisle({
+  aisle,
+  onRemoveProduct,
+  showContents,
+}: AisleProps) {
   return (
-    <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
+    <div className="aisle">
       <h3>{aisle.name}</h3>
-      <div>
-        {aisle.shelves.map((shelf) => (
-          <Shelf
-            key={shelf.id}
-            shelf={shelf}
-            aisle={aisle}
-            aisles={aisles}
-            setAisles={setAisles}
-          />
-        ))}
-      </div>
+      {showContents && (
+        <ul>
+          {aisle.products.map((product) => (
+            <li key={product.id}>
+              {product.name}
+              <button onClick={() => onRemoveProduct(product.id)}>
+                Remove
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
-};
-
-export default Aisle;
+}
