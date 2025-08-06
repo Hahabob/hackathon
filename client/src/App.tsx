@@ -7,7 +7,7 @@
 import Sidebar from "./components/SideBar";
 import { useAuth } from "./contexts/AuthContext";
 import { useSidebar } from "./contexts/SideBarContext";
-
+import ProductList from "./components/ProductList";
 // import Header from "./components/Header";
 // import Navigation from "./components/Navigation";
 
@@ -25,6 +25,7 @@ const App = () => {
           <Route path="/map" element={<MapPage />} />
         </Routes>
       </main> */}
+      <ProductList />
       <button
         onClick={toggleSidebar}
         className="px-4 py-2 bg-blue-600 text-white rounded"
