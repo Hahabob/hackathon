@@ -1,4 +1,12 @@
-// This file is responsible for managing the global state of the shopping cart.
-// It will be consumed by components like ShoppingCart.tsx, ProductCard.tsx, and CartItem.tsx.
-// Best practice: Use the useReducer hook for complex state logic.
-// Persist the cart state to localStorage to prevent data loss on page refresh.
+import { createContext } from "react";
+import type { CartItem } from "../types/CartItem";
+
+export type CartContextType = {
+  cart: CartItem[];
+  addToCart: (item: CartItem) => void;
+  removeFromCart: (productId: string) => void;
+  clearCart: () => void;
+};
+
+const CartContext = createContext<CartContextType | null>(null);
+export default CartContext;
