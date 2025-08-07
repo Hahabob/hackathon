@@ -66,8 +66,8 @@ const ProductList = () => {
       Meat: "🥩",
       Dairy: "🥛",
       Bakery: "🍞",
-      Snacks: "🍿",
-      Beverages: "🥤",
+      Sweets: "🍿",
+      Drinks: "🥤",
       Frozen: "🧊",
       Pantry: "🥫",
       Household: "🧽",
@@ -76,6 +76,9 @@ const ProductList = () => {
       Electronics: "📱",
       Pharmacy: "💊",
       default: "🛒",
+      Cereal: "🥣",
+      Snacks: "🍪",
+      Spreads: "🥑 + 🥣",
     };
     return categoryEmojis[category] || categoryEmojis.default;
   };
