@@ -115,7 +115,7 @@ const StartPage: React.FC = () => {
         initial="initial"
         animate="animate"
         exit="exit"
-        className="min-h-screen font-sans text-gray-900 bg-white"
+        className="min-h-screen font-sans bg-background text-foreground"
       >
         {/* ============================ HERO ============================ */}
         <motion.header
@@ -127,19 +127,22 @@ const StartPage: React.FC = () => {
             className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1556911220-bff31c812dba?auto=format&fit=crop&w=1600&q=60')] bg-cover bg-center opacity-90 blur-sm"
             aria-hidden="true"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-white via-white/70 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-b from-white dark:from-zinc-900 via-white/70 dark:via-zinc-800 to-transparent" />
 
           <div className="relative z-10 mx-auto max-w-5xl px-4 py-24 text-center">
-            <p className="inline-flex items-center gap-2 rounded-full bg-green-100 px-4 py-2 text-sm font-medium text-green-700 shadow-sm">
+            <p className="inline-flex items-center gap-2 rounded-full bg-green-100 dark:bg-green-900 px-4 py-2 text-sm font-medium text-green-700 dark:text-green-400 shadow-sm">
               <Zap className="h-4 w-4" />
               {user ? `Welcome back, ${user.name}!` : "Plan • Shop • Save"}
             </p>
 
             <h1 className="mt-8 text-4xl font-extrabold leading-tight tracking-tight sm:text-6xl md:text-7xl">
-              Welcome to <span className="text-green-600">SmartCart</span>
+              Welcome to{" "}
+              <span className="text-green-600 dark:text-green-400">
+                SmartCart
+              </span>
             </h1>
 
-            <p className="mx-auto mt-6 max-w-2xl text-lg text-gray-700 sm:text-xl">
+            <p className="mx-auto mt-6 max-w-2xl text-lg text-gray-700 dark:text-gray-300 sm:text-xl">
               Plan and optimize your supermarket shopping experience with
               intelligent routes and real‑time deals.
             </p>
@@ -161,7 +164,7 @@ const StartPage: React.FC = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.6 }}
             transition={{ duration: 0.6 }}
-            className="text-center text-3xl font-bold sm:text-4xl"
+            className="text-center text-3xl font-bold sm:text-4xl text-foreground"
           >
             Why Choose SmartCart?
           </motion.h2>
@@ -170,7 +173,7 @@ const StartPage: React.FC = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.6 }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="mx-auto mt-4 max-w-2xl text-center text-lg text-gray-600"
+            className="mx-auto mt-4 max-w-2xl text-center text-lg text-gray-600 dark:text-gray-400"
           >
             Experience a smarter, faster grocery run with features built for
             convenience.
@@ -537,7 +540,7 @@ const StartPage: React.FC = () => {
         </section>
 
         {/* ====================== FINAL CALL‑TO‑ACTION ===================== */}
-        <section className="bg-green-50 py-20">
+        <section className="bg-green-50 dark:bg-zinc-900 py-20">
           <motion.div
             className="mx-auto max-w-3xl px-4 text-center"
             initial={{ opacity: 0, y: 40 }}
@@ -545,10 +548,10 @@ const StartPage: React.FC = () => {
             viewport={{ once: true, amount: 0.5 }}
             transition={{ duration: 0.6 }}
           >
-            <h2 className="text-3xl font-bold sm:text-4xl">
+            <h2 className="text-3xl font-bold sm:text-4xl text-foreground">
               Ready to Transform Your Shopping?
             </h2>
-            <p className="mt-4 text-lg text-gray-700">
+            <p className="mt-4 text-lg text-gray-700 dark:text-gray-400">
               Join thousands of smart shoppers who save time and money with
               SmartCart.
             </p>
