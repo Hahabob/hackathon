@@ -62,7 +62,7 @@ const ProductList = () => {
   const getCategoryEmoji = (category: string) => {
     const categoryEmojis: { [key: string]: string } = {
       Fruits: "🍎",
-      Vegetables: "🥕",
+      Produce: "🥕",
       Meat: "🥩",
       Dairy: "🥛",
       Bakery: "🍞",
@@ -79,6 +79,9 @@ const ProductList = () => {
       Cereal: "🥣",
       Snacks: "🍪",
       Spreads: "🥑 + 🥣",
+      Salads: "🥗",
+      Cooking: "🍳",
+      
     };
     return categoryEmojis[category] || categoryEmojis.default;
   };
