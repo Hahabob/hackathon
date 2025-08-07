@@ -65,7 +65,6 @@ const StoreSelectorPage = () => {
   if (cart.length === 0) {
     return (
       <div className="min-h-screen bg-background pb-20">
-        <Header title="Choose Store" />
         <div className="container mx-auto px-4 py-6">
           <div className="text-center py-12">
             <ShoppingBag className="h-20 w-20 text-muted-foreground mx-auto mb-6" />
@@ -89,8 +88,6 @@ const StoreSelectorPage = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Header title="Choose Supermarket" showBackButton />
-
       <div className="container mx-auto px-4 py-6 space-y-6 pt-20 pb-32">
         {/* Cart Summary */}
         <Card className="border-0 shadow-lg bg-primary/5">

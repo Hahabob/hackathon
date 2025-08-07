@@ -56,9 +56,9 @@ export default function CartSummary() {
             </div>
             <div className="text-left">
               <div className="text-sm font-medium">
-                {totalItems === 1 ? "1 פריט" : `${totalItems} פריטים`}
+                {totalItems === 1 ? "1 item" : `${totalItems} items`}
               </div>
-              <div className="text-xs opacity-90">לחץ לצפייה בעגלה</div>
+              <div className="text-xs opacity-90">Press to watch cart</div>
             </div>
           </div>
 
@@ -66,7 +66,7 @@ export default function CartSummary() {
           <div className="flex items-center space-x-2">
             <div className="text-left">
               <div className="text-lg font-bold">₪{totalPrice.toFixed(2)}</div>
-              <div className="text-xs opacity-90">סה"כ</div>
+              <div className="text-xs opacity-90">Total</div>
             </div>
             <X onClick={clearCart} />
           </div>

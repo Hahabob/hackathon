@@ -7,6 +7,7 @@ interface IProduct extends Document {
   category: string;
   barcode: number;
   price: number;
+  image?: string; // Added image field
   location?: {
     x: number;
     y: number;
@@ -36,6 +37,9 @@ const productSchema = new Schema<IProduct>(
     barcode: {
       type: Number,
       require: true,
+    },
+    image: {
+      type: String, // Added image field to schema
     },
     location: {
       x: {

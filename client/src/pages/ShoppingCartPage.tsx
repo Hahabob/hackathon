@@ -27,8 +27,6 @@ const ShoppingCartPage = () => {
   if (cart.length === 0) {
     return (
       <div className="min-h-screen bg-background">
-        <Header title="Cart" showBackButton />
-
         <div className="container mx-auto px-4 py-12 text-center pt-20 pb-32">
           <div className="max-w-md mx-auto">
             <ShoppingCart className="h-20 w-20 text-muted-foreground mx-auto mb-6" />
@@ -87,7 +85,7 @@ const ShoppingCartPage = () => {
                       {item.product.category || "No description"}
                     </p>
                     <p className="text-base font-bold text-primary">
-                      ${item.product.price.toFixed(2)}
+                      ₪{item.product.price.toFixed(2)}
                     </p>
                   </div>
 
@@ -133,20 +131,22 @@ const ShoppingCartPage = () => {
           <CardContent className="p-6 space-y-4">
             <div className="flex justify-between items-center text-sm text-muted-foreground">
               <span>Items ({getTotalItems()})</span>
-              <span className="font-medium">${getTotalPrice().toFixed(2)}</span>
+              <span className="font-medium">
+                ֱִִִָָ₪{getTotalPrice().toFixed(2)}
+              </span>
             </div>
 
             <div className="flex justify-between items-center text-sm text-muted-foreground">
               <span>Estimated Tax</span>
               <span className="font-medium">
-                ${(getTotalPrice() * 0.08).toFixed(2)}
+                ₪{(getTotalPrice() * 0.08).toFixed(2)}
               </span>
             </div>
 
             <div className="border-t border-border pt-4 flex justify-between items-center">
               <span className="text-lg font-bold text-foreground">Total</span>
               <span className="text-lg font-bold text-primary">
-                ${(getTotalPrice() * 1.08).toFixed(2)}
+                ₪{(getTotalPrice() * 1.08).toFixed(2)}
               </span>
             </div>
           </CardContent>

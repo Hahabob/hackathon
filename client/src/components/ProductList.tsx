@@ -1,7 +1,7 @@
 // This component provides a modern, grid-based product display with categories and search functionality
 import { useState, useMemo } from "react";
-import { Search, Plus, Minus, ShoppingCart } from "lucide-react";
-import { Input } from "@/components/ui/input";
+import { Plus, Minus } from "lucide-react";
+
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import ProductCard from "./ProductCard";
@@ -114,18 +114,6 @@ const ProductList = () => {
     <div className="min-h-screen bg-background pb-20">
       <div className="container mx-auto px-4 py-6 space-y-6">
         {/* Search and Filter (only show if no global search) */}
-        {!searchQuery && (
-          <div className="flex gap-4">
-            <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-              <Input
-                placeholder="Search products..."
-                className="pl-10 rounded-xl"
-                disabled
-              />
-            </div>
-          </div>
-        )}
 
         {/* Categories - Horizontal Scrollable */}
         {!searchQuery && (
@@ -226,9 +214,7 @@ const ProductList = () => {
                             className="w-full h-full object-cover"
                           />
                         ) : (
-                          <div className="w-full h-full bg-gray-100 flex items-center justify-center">
-                            <ShoppingCart className="h-6 w-6 text-gray-400" />
-                          </div>
+                          <div className="w-full h-full bg-gray-100 flex items-center justify-center"></div>
                         )}
                       </div>
 

@@ -105,8 +105,6 @@ const Summary = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Header title="Shopping Complete" showBackButton />
-
       <div className="container mx-auto px-4 py-6 space-y-6 pt-20 pb-32">
         {/* Success Message */}
         <Card className="border-0 shadow-lg text-center">

@@ -6,7 +6,7 @@ import ProductModel from "../models/Product";
 const ProductController = {
   async create(req: AuthRequest, res: Response) {
     try {
-      const { name, producer, category, barcode, price } = req.body ?? {};
+      const { name, producer, category, barcode, price, image } = req.body ?? {};
       const user = await UserModel.findById(req.user!.userId);
       if (!user) {
         res.status(400).json({ message: "User dosen't exist" });
@@ -18,6 +18,7 @@ const ProductController = {
         category,
         barcode,
         price,
+        image,
       });
 
       res.status(201).json({
@@ -50,7 +51,7 @@ const ProductController = {
   async update(req: AuthRequest, res: Response) {
     try {
       const { productId } = req.params;
-      const { name, producer, category, barcode, price } = req.body;
+      const { name, producer, category, barcode, price, image } = req.body;
       const product = await ProductModel.findById(productId);
       if (!product) {
         return res
@@ -63,6 +64,7 @@ const ProductController = {
       product.category = category ?? product.category;
       product.barcode = barcode ?? product.barcode;
       product.price = price ?? product.price;
+      product.image = image ?? product.image; // Update the image field
 
       await product.save();
 
