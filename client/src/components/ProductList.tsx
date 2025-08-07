@@ -66,8 +66,8 @@ const ProductList = () => {
       Meat: "🥩",
       Dairy: "🥛",
       Bakery: "🍞",
-      Snacks: "🍿",
-      Beverages: "🥤",
+      Sweets: "🍿",
+      Drinks: "🥤",
       Frozen: "🧊",
       Pantry: "🥫",
       Household: "🧽",
@@ -76,6 +76,9 @@ const ProductList = () => {
       Electronics: "📱",
       Pharmacy: "💊",
       default: "🛒",
+      Cereal: "🥣",
+      Snacks: "🍪",
+      Spreads: "🥑 + 🥣",
     };
     return categoryEmojis[category] || categoryEmojis.default;
   };
@@ -260,10 +263,9 @@ const ProductList = () => {
                         ) : (
                           <div className="flex items-center gap-2 bg-gray-100 rounded-lg p-1">
                             <Button
-                              variant="ghost"
                               size="sm"
                               onClick={() => handleDecrement(product)}
-                              className="h-8 w-8 p-0 hover:bg-gray-200"
+                              className="h-8 w-8 flex items-center justify-center rounded-full border border-purple-500 bg-[#F08B51] text-white hover:bg-[#d97a46] transition"
                             >
                               <Minus className="h-4 w-4" />
                             </Button>
@@ -271,10 +273,9 @@ const ProductList = () => {
                               {quantity}
                             </span>
                             <Button
-                              variant="ghost"
                               size="sm"
                               onClick={() => handleIncrement(product)}
-                              className="h-8 w-8 p-0 hover:bg-gray-200"
+                              className="h-8 w-8 flex items-center justify-center rounded-full border border-purple-500 bg-[#8AA624] text-white hover:bg-[#7a961f] transition"
                             >
                               <Plus className="h-4 w-4" />
                             </Button>

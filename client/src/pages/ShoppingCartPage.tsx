@@ -98,7 +98,7 @@ const ShoppingCartPage = () => {
                         onClick={() =>
                           updateQuantity(item.product._id, item.quantity - 1)
                         }
-                        className="p-1 text-muted-foreground hover:text-foreground"
+                        className="h-8 w-8 flex items-center justify-center rounded-full border border-purple-500 bg-[#F08B51] text-white hover:bg-[#d97a46] transition"
                       >
                         <Minus className="h-4 w-4" />
                       </button>
@@ -109,9 +109,9 @@ const ShoppingCartPage = () => {
                         onClick={() =>
                           updateQuantity(item.product._id, item.quantity + 1)
                         }
-                        className="p-1 text-muted-foreground hover:text-foreground"
+                        className="h-8 w-8 flex items-center justify-center rounded-full border border-purple-500 bg-[#8AA624] text-white hover:bg-[#7a961f] transition"
                       >
-                        <Plus className="h-4 w-4" />
+                        <Plus className="h-4 w-4 b" />
                       </button>
                     </div>
 
