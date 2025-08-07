@@ -1,6 +1,5 @@
 import { Routes, Route } from "react-router-dom";
 import { BrowserRouter } from "react-router-dom";
-import { TbLayoutSidebarRightExpandFilled } from "react-icons/tb"; // Import the new icon
 
 import ProductCatalogPage from "./pages/ProductCatalogPage";
 import ShoppingCartPage from "./pages/ShoppingCartPage";
@@ -33,7 +32,6 @@ const App = () => {
           onClick={toggleSidebar}
           className="px-4 py-2 bg-blue-600 text-white rounded"
         >
-          <TbLayoutSidebarRightExpandFilled className="h-6 w-6" />{" "}
           {/* Use the new icon */}
         </button>
         {window.location.pathname !== "/" && <GlobalSearchBar />}
