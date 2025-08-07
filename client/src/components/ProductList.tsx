@@ -1,11 +1,10 @@
 // This component provides a modern, grid-based product display with categories and search functionality
-import { useState } from "react";
-import { Search, Filter } from "lucide-react";
+import { useState, useMemo } from "react";
+import { Search, Plus, Minus, ShoppingCart } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import ProductCard from "./ProductCard";
-import ProductItem from "./ProductItem";
 import useCart from "@/hooks/useCart";
 import { useFetchProducts } from "@/hooks/useFetch";
 import type { Product } from "@/types/Product";
@@ -13,29 +12,51 @@ import { useSearch } from "@/contexts/SearchContext";
 
 const ProductList = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
-  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
   const { data: products = [], isLoading, error } = useFetchProducts();
-  const { addToCart } = useCart();
+  const { cart, addToCart, updateQuantity, removeFromCart } = useCart();
   const { searchQuery } = useSearch();
 
   // Get unique categories from products
-  const categories = [...new Set(products.map((product) => product.category))];
+  const categories = useMemo(() => {
+    return [...new Set(products.map((product) => product.category))];
+  }, [products]);
 
   // Filter products based on category and search query
-  const filteredProducts = products.filter((product) => {
-    const matchesCategory =
-      selectedCategory === "All" || product.category === selectedCategory;
-    const matchesSearch =
-      !searchQuery ||
-      product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      product.category.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesCategory && matchesSearch;
-  });
+  const filteredProducts = useMemo(() => {
+    return products.filter((product) => {
+      const matchesCategory =
+        selectedCategory === "All" || product.category === selectedCategory;
+      const matchesSearch =
+        !searchQuery ||
+        product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        product.category.toLowerCase().includes(searchQuery.toLowerCase());
+      return matchesCategory && matchesSearch;
+    });
+  }, [products, selectedCategory, searchQuery]);
+
+  const getCartQuantity = (productId: string) => {
+    const item = cart.find((item) => item.product._id === productId);
+    return item ? item.quantity : 0;
+  };
 
   const handleAddToCart = (product: Product) => {
     addToCart(product, 1);
+  };
+
+  const handleIncrement = (product: Product) => {
+    const currentQuantity = getCartQuantity(product._id);
+    updateQuantity(product._id, currentQuantity + 1);
+  };
+
+  const handleDecrement = (product: Product) => {
+    const currentQuantity = getCartQuantity(product._id);
+    if (currentQuantity > 1) {
+      updateQuantity(product._id, currentQuantity - 1);
+    } else {
+      removeFromCart(product._id);
+    }
   };
 
   const getCategoryEmoji = (category: string) => {
@@ -103,65 +124,65 @@ const ProductList = () => {
                 disabled
               />
             </div>
-            <Button
-              variant="outline"
-              size="icon"
-              className="rounded-xl"
-              onClick={() => setViewMode(viewMode === "grid" ? "list" : "grid")}
-            >
-              <Filter className="h-4 w-4" />
-            </Button>
           </div>
         )}
 
-        {/* Categories */}
+        {/* Categories - Horizontal Scrollable */}
         {!searchQuery && (
           <div>
             <h2 className="text-xl font-semibold text-foreground mb-4">
               Categories
             </h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-6">
-              <Card
-                className={`cursor-pointer border-2 transition-all duration-300 hover:scale-105 ${
+            <div className="flex gap-3 overflow-x-auto pb-4 mb-6 snap-x snap-mandatory scrollbar-hide">
+              <style>{`
+                .scrollbar-hide {
+                  -ms-overflow-style: none;
+                  scrollbar-width: none;
+                }
+                .scrollbar-hide::-webkit-scrollbar {
+                  display: none;
+                }
+              `}</style>
+
+              <button
+                className={`flex-shrink-0 px-6 py-3 rounded-full font-medium text-sm transition-all duration-300 snap-start ${
                   selectedCategory === "All"
-                    ? "border-primary bg-primary/5"
-                    : "border-border hover:border-primary/50"
+                    ? "bg-blue-600 text-white shadow-lg"
+                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                 }`}
                 onClick={() => setSelectedCategory("All")}
               >
-                <CardContent className="p-4 text-center">
-                  <div className="text-3xl mb-2">🛒</div>
-                  <p className="font-medium text-sm">All</p>
-                  <p className="text-xs text-muted-foreground">
-                    {products.length}
-                  </p>
-                </CardContent>
-              </Card>
+                <div className="flex items-center gap-2">
+                  <span>🛒</span>
+                  <span>All Products</span>
+                  <span className="text-xs opacity-75">
+                    ({products.length})
+                  </span>
+                </div>
+              </button>
 
               {categories.map((category) => {
                 const categoryCount = products.filter(
                   (p) => p.category === category
                 ).length;
                 return (
-                  <Card
+                  <button
                     key={category}
-                    className={`cursor-pointer border-2 transition-all duration-300 hover:scale-105 ${
+                    className={`flex-shrink-0 px-6 py-3 rounded-full font-medium text-sm transition-all duration-300 snap-start ${
                       selectedCategory === category
-                        ? "border-primary bg-primary/5"
-                        : "border-border hover:border-primary/50"
+                        ? "bg-blue-600 text-white shadow-lg"
+                        : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                     }`}
                     onClick={() => setSelectedCategory(category)}
                   >
-                    <CardContent className="p-4 text-center">
-                      <div className="text-3xl mb-2">
-                        {getCategoryEmoji(category)}
-                      </div>
-                      <p className="font-medium text-sm">{category}</p>
-                      <p className="text-xs text-muted-foreground">
-                        {categoryCount} items
-                      </p>
-                    </CardContent>
-                  </Card>
+                    <div className="flex items-center gap-2">
+                      <span>{getCategoryEmoji(category)}</span>
+                      <span>{category}</span>
+                      <span className="text-xs opacity-75">
+                        ({categoryCount})
+                      </span>
+                    </div>
+                  </button>
                 );
               })}
             </div>
@@ -183,56 +204,89 @@ const ProductList = () => {
             </span>
           </div>
 
-          {viewMode === "grid" ? (
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-              {filteredProducts.map((product) => (
-                <div key={product._id} className="relative">
-                  <ProductItem
-                    product={product}
-                    onClick={() => setSelectedProduct(product)}
-                  />
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div className="space-y-4">
-              {filteredProducts.map((product) => (
+          {/* Products as Full-Width Rows */}
+          <div className="space-y-3">
+            {filteredProducts.map((product) => {
+              const quantity = getCartQuantity(product._id);
+
+              return (
                 <Card
                   key={product._id}
-                  className="border shadow-sm hover:shadow-md transition-all"
+                  className="border shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer"
+                  onClick={() => setSelectedProduct(product)}
                 >
                   <CardContent className="p-4">
                     <div className="flex items-center gap-4">
-                      <div className="w-20 h-20 rounded-lg overflow-hidden bg-muted">
-                        <img
-                          src={product.image}
-                          alt={product.name}
-                          className="w-full h-full object-cover"
-                        />
+                      {/* Product Image */}
+                      <div className="w-16 h-16 rounded-lg overflow-hidden bg-muted flex-shrink-0">
+                        {product.image ? (
+                          <img
+                            src={product.image}
+                            alt={product.name}
+                            className="w-full h-full object-cover"
+                          />
+                        ) : (
+                          <div className="w-full h-full bg-gray-100 flex items-center justify-center">
+                            <ShoppingCart className="h-6 w-6 text-gray-400" />
+                          </div>
+                        )}
                       </div>
-                      <div className="flex-1">
-                        <h3 className="font-semibold text-foreground">
+
+                      {/* Product Info */}
+                      <div className="flex-1 min-w-0">
+                        <h3 className="font-semibold text-foreground truncate">
                           {product.name}
                         </h3>
-                        <p className="text-sm text-muted-foreground">
+                        <p className="text-sm text-muted-foreground line-clamp-2">
                           {product.category}
                         </p>
                         <p className="text-lg font-bold text-primary">
-                          ₪{product.price}
+                          ₪{product.price.toFixed(2)}
                         </p>
                       </div>
-                      <Button
-                        onClick={() => handleAddToCart(product)}
-                        className="rounded-xl"
+
+                      {/* Cart Controls */}
+                      <div
+                        className="flex-shrink-0"
+                        onClick={(e) => e.stopPropagation()}
                       >
-                        Add to Cart
-                      </Button>
+                        {quantity === 0 ? (
+                          <Button
+                            onClick={() => handleAddToCart(product)}
+                            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium"
+                          >
+                            Add to Cart
+                          </Button>
+                        ) : (
+                          <div className="flex items-center gap-2 bg-gray-100 rounded-lg p-1">
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => handleDecrement(product)}
+                              className="h-8 w-8 p-0 hover:bg-gray-200"
+                            >
+                              <Minus className="h-4 w-4" />
+                            </Button>
+                            <span className="px-3 py-1 font-medium text-sm min-w-[40px] text-center">
+                              {quantity}
+                            </span>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => handleIncrement(product)}
+                              className="h-8 w-8 p-0 hover:bg-gray-200"
+                            >
+                              <Plus className="h-4 w-4" />
+                            </Button>
+                          </div>
+                        )}
+                      </div>
                     </div>
                   </CardContent>
                 </Card>
-              ))}
-            </div>
-          )}
+              );
+            })}
+          </div>
 
           {filteredProducts.length === 0 && (
             <div className="text-center py-12">

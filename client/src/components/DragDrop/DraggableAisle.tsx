@@ -1,5 +1,5 @@
 import { useDraggable } from "@dnd-kit/core";
-import {  Trash2 } from "lucide-react";
+import { Trash2 } from "lucide-react";
 
 import type { Aisle } from "./types";
 
@@ -12,15 +12,10 @@ export default function DraggableAisle({
   aisle,
   onRemoveProduct,
 }: DraggableAisleProps) {
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    isDragging,
-  } = useDraggable({
-    id: aisle.id,
-  });
+  const { attributes, listeners, setNodeRef, transform, isDragging } =
+    useDraggable({
+      id: aisle.id,
+    });
 
   const style = {
     transform: transform

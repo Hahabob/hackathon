@@ -33,7 +33,7 @@ export default function CartSummary() {
   };
 
   return (
-    <div className="fixed bottom-4 left-4 right-4 z-40 mx-auto max-w-sm">
+    <div className="fixed bottom-24 left-4 right-4 z-40 mx-auto max-w-sm">
       <Button
         onClick={handleNavigateToCart}
         className="w-full h-16 bg-blue-600 hover:bg-blue-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-2xl relative overflow-hidden group"
