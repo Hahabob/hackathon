@@ -44,9 +44,15 @@ export function LoginForm() {
   };
 
   return (
-    <Card className="max-w-md mx-auto bg-white rounded-xl shadow-lg border border-gray-200">
-      <CardHeader className="border-b border-gray-200 px-6 py-4">
-        <CardTitle className="text-2xl font-bold text-gray-800 text-center">
+    <Card
+      className="max-w-md mx-auto rounded-xl shadow-lg border 
+      bg-white dark:bg-zinc-900 border-gray-200 dark:border-zinc-700"
+    >
+      <CardHeader className="border-b px-6 py-4 border-gray-200 dark:border-zinc-700">
+        <CardTitle
+          className="text-2xl font-bold text-center
+          text-gray-800 dark:text-zinc-100"
+        >
           Login
         </CardTitle>
       </CardHeader>
@@ -59,7 +65,10 @@ export function LoginForm() {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="block text-sm font-medium text-gray-700 mb-1">
+                  <FormLabel
+                    className="block text-sm font-medium mb-1
+                    text-gray-700 dark:text-zinc-300"
+                  >
                     Email
                   </FormLabel>
                   <FormControl>
@@ -67,7 +76,12 @@ export function LoginForm() {
                       type="email"
                       placeholder="email@example.com"
                       {...field}
-                      className="w-full rounded-md border border-gray-300 px-4 py-2 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                      className="w-full rounded-md border px-4 py-2 placeholder-gray-400 
+                        border-gray-300 dark:border-zinc-700
+                        focus:outline-none focus:ring-2 focus:ring-blue-500
+                        focus:border-transparent transition
+                        bg-white dark:bg-zinc-800
+                        text-gray-900 dark:text-zinc-100"
                     />
                   </FormControl>
                   <FormMessage className="text-red-600 text-sm mt-1" />
@@ -80,7 +94,10 @@ export function LoginForm() {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="block text-sm font-medium text-gray-700 mb-1">
+                  <FormLabel
+                    className="block text-sm font-medium mb-1
+                    text-gray-700 dark:text-zinc-300"
+                  >
                     Password
                   </FormLabel>
                   <FormControl>
@@ -88,7 +105,12 @@ export function LoginForm() {
                       type="password"
                       placeholder="Password"
                       {...field}
-                      className="w-full rounded-md border border-gray-300 px-4 py-2 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                      className="w-full rounded-md border px-4 py-2 placeholder-gray-400 
+                        border-gray-300 dark:border-zinc-700
+                        focus:outline-none focus:ring-2 focus:ring-blue-500
+                        focus:border-transparent transition
+                        bg-white dark:bg-zinc-800
+                        text-gray-900 dark:text-zinc-100"
                     />
                   </FormControl>
                   <FormMessage className="text-red-600 text-sm mt-1" />
@@ -98,7 +120,9 @@ export function LoginForm() {
 
             <Button
               type="submit"
-              className="w-full bg-gradient-to-r from-blue-600 to-green-500 hover:from-blue-700 hover:to-green-600 text-white font-semibold py-3 rounded-md shadow-md transition"
+              className="w-full bg-gradient-to-r from-blue-600 to-green-500
+                hover:from-blue-700 hover:to-green-600 text-white font-semibold
+                py-3 rounded-md shadow-md transition"
             >
               Log In
             </Button>
